@@ -1,0 +1,66 @@
+import random, time, sys
+#setup constants
+
+max_num_snails = 8
+max_length_name = 20
+finish_line = 40
+
+print('Snail Race created by Alfie')
+
+#ask how many snails will be in the race.
+
+while True:
+    print('How many snails will race? Max', max_num_snails)
+    response = input('> ')
+    if response.isdecimal():
+        numSnailsRacing = int(response)
+        if 1 < numSnailsRacing <= max_num_snails:
+            break
+    print('Enter a number between 2 and', max_num_snails)
+
+#Enter the names for each snail
+
+snailNames = []
+for i in range (1, numSnailsRacing + 1):
+    while True: 
+        print('Enter snail #' + str(i) + "'s name:")
+        name = input('> ')
+        if len(name) == 0:
+            print('Please enter a name.')
+        elif name in snailNames:
+            print('Choose a name that has not already been used.')
+        else:
+            break
+    snailNames.append(name)
+
+print('\n' * 40)
+print('START' + (' ' * (finish_line - len('START')) + 'FINISH'))
+print('|' + (' ' * (finish_line - len('|'))+ '|'))
+snailProgress = {}
+for snailName in snailNames:
+    print(snailName[:max_length_name])
+    print('@v')
+    snailProgress[snailName] = 0
+time.sleep(1.5) # The pause before the race begins
+
+while True:
+    for i in range(random.randint(1, numSnailsRacing // 2)):
+        randomSnailName = random.choice(snailNames)
+        snailProgress[randomSnailName] += 1
+
+        #check if snail reached the finish line
+        if snailProgress[randomSnailName] == finish_line:
+            print(randomSnailName, 'has won!!!')
+            sys.exit()
+
+#Display the start and finish lines: 
+
+print('START' + (' ' * (finish_line - len('START')) + 'FINISH'))
+print('|' + (' ' * (finish_line - 1 ) + '|'))
+
+# display the results 
+
+for snailName in snailNames:
+    spaces = snailProgress[snailName]
+    print((' ' * spaces) + snailName[:max_length_name])
+    print((',' * snailProgress[snailName])+ '@v')
